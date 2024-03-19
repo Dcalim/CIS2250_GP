@@ -1,1 +1,1 @@
-This is a group project. We gonna get hundos
+This is our group project for Software Design 2. 🚀
