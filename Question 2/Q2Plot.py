@@ -1,6 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt 
 import numpy as np
+from matplotlib import pyplot as plt
 import sys
 
 def main(argv):
@@ -33,9 +34,11 @@ def main(argv):
         print("Done Printing csvValues\n")
 
         plt.title(province + " average monthly earning in " + year)
-        plt.plot(months, csvValue)
         plt.xlabel("Months")
         plt.ylabel("Average Earning in Dollars")
+        plt.plot(months, csvValue)
+        manager = plt.get_current_fig_manager()
+        manager.full_screen_toggle()
         plt.show()
     
     # Runs if it cannot find any date fields that match the year or province inputted by user
