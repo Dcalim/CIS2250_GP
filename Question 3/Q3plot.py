@@ -15,8 +15,8 @@ Commandline Parameters: 4
 argv[0] = program file
 argv[1] = Labour force file (data-2015-2019.csv)
 argv[2] = Wages file (wages.csv)
-argv[3] = year
-argv[4] = province
+argv[3] = province
+argv[4] = year
 
 '''
 import pandas as pd
@@ -25,15 +25,15 @@ import sys
 import re
 
 # removes any text within parentheses, including the parentheses during the final output
-def remove_parentheticals(s):
+def remove_parenthesis(s):
     return re.sub(r"\s*\([^)]*\)", "", s)
 
 # plotting employment and wages data in bar graphs
-def plot_employment_and_wages(labor_csv, wages_csv, province, year):
-    labor_data = pd.read_csv(labor_csv)
+def plot_employment_and_wages(labour_csv, wages_csv, province, year):
+    labour_data = pd.read_csv(labour_csv)
     wages_data = pd.read_csv(wages_csv)
     
-    # filtering out specific education levels
+    # filtering out specific education levels for the labour force dataset
     required_levels_labor = [
         '  No PSE  (0,1,2,3,4)',
         '    Some high school,  (1+2)', '    High school, (3)',
@@ -42,6 +42,7 @@ def plot_employment_and_wages(labor_csv, wages_csv, province, year):
         '     Above Bachelor\'s degree (9)"'
     ]
     
+    # filtering out specific education levels for the wages dataset
     required_levels_wages = ['   Some high school',
     '   High school graduate' '   Some post-secondary'
     '   Post-secondary certificate or diploma',
@@ -51,10 +52,10 @@ def plot_employment_and_wages(labor_csv, wages_csv, province, year):
     ] 
 
     # filter the data for required education levels and by province and year
-    labor_filtered = labor_data[
-        (labor_data['Prov'] == province) &
-        (labor_data['Timeseries'].str.contains(year)) &
-        (labor_data['Education'].isin(required_levels_labor)) 
+    labour_filtered = labour_data[
+        (labour_data['Prov'] == province) &
+        (labour_data['Timeseries'].str.contains(year)) &
+        (labour_data['Education'].isin(required_levels_labor)) 
     ]
     
     # filter the wages data by province, year, and wage type
@@ -66,20 +67,20 @@ def plot_employment_and_wages(labor_csv, wages_csv, province, year):
     ]
  
     # group and sum the total employment for each education level
-    labor_stats = labor_filtered.groupby('Education')['Total'].sum()
+    labour_stats = labour_filtered.groupby('Education')['Total'].sum()
 
     # group and calculate the mean of wages for each education level
     wage_stats = wages_filtered.groupby('Education level')['Both Sexes'].mean()
 
     # removing parentheses 
-    labor_stats.index = labor_stats.index.map(remove_parentheticals)
-    wage_stats.index = wage_stats.index.map(remove_parentheticals)
+    labour_stats.index = labour_stats.index.map(remove_parenthesis)
+    wage_stats.index = wage_stats.index.map(remove_parenthesis)
 
     # create subplots
     fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(12, 10))
 
     # plotting the employment data
-    labor_stats.plot(kind='bar', ax=axes[0], color='skyblue')
+    labour_stats.plot(kind='bar', ax=axes[0], color='skyblue')
     axes[0].set_title(f'Total Employment by Education Level in {province} - {year}')
     axes[0].set_ylabel('Total Employment')
     
@@ -97,14 +98,14 @@ def plot_employment_and_wages(labor_csv, wages_csv, province, year):
 
 if __name__ == "__main__":
     if len(sys.argv) != 5:
-        print("Usage: python script.py <labor_csv> <wages_csv> <province> <year>")
+        print("Usage: python script.py <labour_csv> <wages_csv> <province> <year>")
         sys.exit(1)
     
     # command line arguments
-    labor_csv = sys.argv[1]
+    labour_csv = sys.argv[1]
     wages_csv = sys.argv[2]
     province = sys.argv[3]
     year = sys.argv[4]
     
-    plot_employment_and_wages(labor_csv, wages_csv, province, year)
+    plot_employment_and_wages(labour_csv, wages_csv, province, year)
 
