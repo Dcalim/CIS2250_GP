@@ -10,12 +10,12 @@ This program reads through 2 CSV files, one containing data regarding labour for
 In the command line, the program asks the user for a specific year and province. 
 Using this input, the program filters through both csv files and outputs all the data that is within the inputted time frame by the user, while also ensuring that no more than 50 rows per dataset and 5 rows per education level are printed.
 
-Commandline Parameters: 5
+Commandline Parameters: 4
 argv[0] = program file
 argv[1] = Labour force file (data-2015-2019.csv)
 argv[2] = Wages file (wages.csv)
-argv[3] = year
-argv[4] = province
+argv[3] = province
+argv[4] = year
 
 '''
 import csv
@@ -23,14 +23,14 @@ import sys
 
 def main(argv):
     if len(argv) != 5:
-        print("Usage: python {} data-2015-2019.csv wages.csv <year> <province>".format(argv[0]))
+        print("Usage: python {} data-2015-2019.csv wages.csv <province> <year>".format(argv[0]))
         sys.exit(1)
 
     # command line arguments
-    labor_force_path = argv[1]
+    labour_force_path = argv[1]
     wages_path = argv[2]
-    year = argv[3]
-    province = argv[4]
+    province = argv[3]
+    year = argv[4]
 
     # validating input
     if not year.isdigit():
@@ -39,25 +39,35 @@ def main(argv):
 
     try:
         # processing the labour force dataset
-        with open(labor_force_path, newline='', encoding="utf-8-sig") as labor_file:
-            labor_reader = csv.DictReader(labor_file)
+        with open(labour_force_path, newline='', encoding="utf-8-sig") as labor_file:
+            # creates a dictionary reader for the CSV, allowing for data to be accessed by column names
+            labour_reader = csv.DictReader(labor_file)
             print("\nLabour Force Data:")
-            print(",".join(labor_reader.fieldnames))
+            print(",".join(labour_reader.fieldnames))
 
-            education_counts_labor = {}
-            row_count_labor = 0
+            # to count the number of rows per education level
+            education_counts_labour = {}
 
-            for row in labor_reader:
-                if row_count_labor >= 50:
-                    break  # Break out of the loop if 50 rows have been printed
+            # tracks the total number of rows printed
+            row_count_labour = 0
 
+            # iterating through each row in the labour force data file
+            for row in labour_reader:
+                # breaking if 50 rows have been printed
+                if row_count_labour >= 50:
+                    break  
+
+                # check to see if the row matches the specified year and province
+                # converts the 'Prov' field to uppercase and removes leading/trailing whitespace
                 if year in row['Timeseries'] and province.upper() == row['Prov'].upper().strip():
+                    # updates the count of rows for the current education level
                     education_level = row['Education'].strip()
-                    education_counts_labor[education_level] = education_counts_labor.get(education_level, 0) + 1
+                    education_counts_labour[education_level] = education_counts_labour.get(education_level, 0) + 1
                     
-                    if education_counts_labor[education_level] <= 5:
-                        print(','.join([row[fieldname].strip() for fieldname in labor_reader.fieldnames]))
-                        row_count_labor += 1
+                    # limiting the number of rows printed per education level to 5
+                    if education_counts_labour[education_level] <= 5:
+                        print(','.join([row[fieldname].strip() for fieldname in labour_reader.fieldnames]))
+                        row_count_labour += 1
 
         # processing the wages dataset
         with open(wages_path, newline='', encoding="utf-8-sig") as wages_file:
@@ -65,17 +75,22 @@ def main(argv):
             print("\nWages Data:")
             print(",".join(wages_reader.fieldnames))
 
+            # to count the number of rows per education level
             education_counts_wages = {}
+
+            # tracks the total number of rows printed
             row_count_wages = 0
 
             for row in wages_reader:
                 if row_count_wages >= 50:
                     break  # break out of the loop if 50 rows have been printed
 
+                # check to see if the row matches the specified year and province
                 if year == row['YEAR'] and province.upper() == row['Geography'].upper().strip():
                     education_level = row['Education level'].strip()
                     education_counts_wages[education_level] = education_counts_wages.get(education_level, 0) + 1
                     
+                    # limiting the number of rows printed per education level to 5
                     if education_counts_wages[education_level] <= 5:
                         print(','.join([row[fieldname].strip() for fieldname in wages_reader.fieldnames]))
                         row_count_wages += 1
