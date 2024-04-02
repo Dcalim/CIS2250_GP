@@ -1,4 +1,3 @@
-
 '''
 Q4plot.py
 Author(s): Hamza Memon (1235100)
@@ -68,13 +67,12 @@ def plot_unemployment(csv_file, selected_month):
 
     plt.show()
 
-if __name__ == "__main__":
     # Check if exactly three arguments have been provided (including the script name).
     if len(sys.argv) != 3:
         print("Usage: python Q4unemploymentData.py umployment_duration.csv 'MonthYear'")
         sys.exit(1)
     
-    csv_file_path = sys.argv[1]
-    month_year = sys.argv[2]
-    # Call the plot_unemployment function with the provided CSV file path and month + year to generate the plot.
-    plot_unemployment(csv_file_path, month_year)
+csv_file_path = sys.argv[1]
+month_year = sys.argv[2]
+# Call the plot_unemployment function with the provided CSV file path and month + year to generate the plot.
+plot_unemployment(csv_file_path, month_year)
