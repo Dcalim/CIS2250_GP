@@ -18,6 +18,8 @@ argv[2] = month + year (eg. Mar2015)
 import csv  
 import sys  
 
+
+
 def main(argv):
     # ensure the correct number of command-line arguments is provided
     if len(argv) != 3:
@@ -52,5 +54,4 @@ def main(argv):
         print("Unable to open the file '{}' : {}".format(input_file_path, err), file=sys.stderr)
         sys.exit(1)  
 
-if __name__ == "__main__":
-    main(sys.argv) 
+main(sys.argv) 
