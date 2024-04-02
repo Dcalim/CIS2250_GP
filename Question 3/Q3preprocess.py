@@ -99,5 +99,4 @@ def main(argv):
         print(f"Unable to open file: {err}", file=sys.stderr)
         sys.exit(1)
 
-if __name__ == "__main__":
-    main(sys.argv)
+main(sys.argv)
