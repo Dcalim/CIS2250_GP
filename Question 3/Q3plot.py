@@ -96,16 +96,15 @@ def plot_employment_and_wages(labour_csv, wages_csv, province, year):
     plt.tight_layout()
     plt.show()
 
-if __name__ == "__main__":
     if len(sys.argv) != 5:
         print("Usage: python script.py <labour_csv> <wages_csv> <province> <year>")
         sys.exit(1)
     
-    # command line arguments
-    labour_csv = sys.argv[1]
-    wages_csv = sys.argv[2]
-    province = sys.argv[3]
-    year = sys.argv[4]
+# command line arguments
+labour_csv = sys.argv[1]
+wages_csv = sys.argv[2]
+province = sys.argv[3]
+year = sys.argv[4]
     
-    plot_employment_and_wages(labour_csv, wages_csv, province, year)
+plot_employment_and_wages(labour_csv, wages_csv, province, year)
 
