@@ -4,6 +4,25 @@ import numpy as np
 from matplotlib import pyplot as plt
 import sys
 
+# Q2Plot.py
+# Author(s): Dion Calim (1275684)
+# Project: Group Assignment Project
+# Date of Last Update: April 1, 2024
+
+# IMPORTANT
+# Please run preProcessingQ2.py if you have not done so yet for most accurate and up to date data
+
+# Functional Summary
+# This python file will plot average monthly earnings for all employees in a specfic province or territory in a specific year
+# The user will have a opportunity to select a province and year in the command line
+
+# Command line parameters: 4
+# argv[0] = program file (plotQ2.py)
+# argv[1] = pre processed csv file (Question2Processed.csv)
+# argv[2] = province (ex, Newfoundland and Labrador)
+# argv[3] = year (ex, 2023)
+
+
 def main(argv):
     
     #error handling 
@@ -28,13 +47,6 @@ def main(argv):
         if((df['REF_DATE'].str[:4] == year)).any():
             csvYear = df[(df['REF_DATE'].str[:4] == year) & (df['GEO'] == province)]['REF_DATE']
             csvValue = df[(df['REF_DATE'].str[:4] == year) & (df['GEO'] == province)]['VALUES'] 
-            print("Printing csvYear\n")
-            print(csvYear)
-            print("Finished Printing csvYear\n\n")
-
-            print("Printing csvValues")
-            print(csvValue)
-            print("Done Printing csvValues\n")
 
             plt.title(province + " average monthly earning in " + year, fontweight='bold')
             plt.xlabel("Months", fontweight='bold')
